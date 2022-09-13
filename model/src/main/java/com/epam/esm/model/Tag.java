@@ -1,9 +1,16 @@
 package com.epam.esm.model;
 
 
-public class Tag {
-    private int id;
+import javax.persistence.*;
 
+@Entity
+@Table(name = "tag")
+public class Tag {
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    @Column(name = "name", nullable = false, length = 150)
     private String name;
 
     public Tag() {
@@ -13,11 +20,11 @@ public class Tag {
         this.name = name;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

@@ -1,6 +1,4 @@
 dependencies {
     implementation project(':model')
-    implementation project(':service')
-    implementation project(':repository')
     // https://mvnrepository.com/artifact/org.postgresql/postgresql
 }
