@@ -1,12 +1,22 @@
 package com.epam.esm.model;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "gift_certificates")
 public class GiftCertificate {
 
-    private int id;
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    @Column(nullable = false, length = 30)
     private String name;
+
+    @Column(length = 100)
     private String description;
+
     private double price;
     private int duration;
     private LocalDateTime create_date;
@@ -25,12 +35,8 @@ public class GiftCertificate {
         this.duration = duration;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -74,18 +80,8 @@ public class GiftCertificate {
     public LocalDateTime getCreate_date() {
         return create_date;
     }
-
-    public void setCreate_date(LocalDateTime create_date) {
-        this.create_date = create_date;
-        updateTime();
-    }
-
     public LocalDateTime getLast_update_date() {
         return last_update_date;
-    }
-
-    public void setLast_update_date(LocalDateTime last_update_date) {
-        this.last_update_date = last_update_date;
     }
 
 }

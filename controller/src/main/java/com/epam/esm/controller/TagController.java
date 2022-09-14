@@ -3,9 +3,12 @@ package com.epam.esm.controller;
 import com.epam.esm.model.Tag;
 import com.epam.esm.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -20,25 +23,27 @@ public class TagController {
     }
 
     @GetMapping()
-    public List<Tag> findAll() {
-        return this.tagService.findAll();
+    public ResponseEntity<List<Tag>> findAll() {
+        return ResponseEntity.ok(this.tagService.findAll());
     }
 
-    @PostMapping("/create")
-    public Tag add(@RequestBody Tag tag) {
-        return this.tagService.add(tag);
+    @PostMapping("/add")
+    public ResponseEntity<?> add(@Valid @RequestBody Tag tag, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            System.out.println("jim");
+            return ResponseEntity.badRequest().body(tag);
+        }
+        return ResponseEntity.ok(this.tagService.add(tag));
     }
 
     @GetMapping("/{id}")
-    public Tag get(@PathVariable("id") long id) {
-        return this.tagService.get(id);
+    public ResponseEntity<Tag> find(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(this.tagService.find(id));
     }
 
     @DeleteMapping("/delete/{id}")
-    public ModelAndView delete(@PathVariable("id") long id) {
-        Tag tag = this.tagService.get(id);
-        this.tagService.delete(tag);
+    public ModelAndView delete(@PathVariable("id") Long id) {
+        this.tagService.deleteById(id);
         return new ModelAndView("redirect:/tags");
     }
-
 }

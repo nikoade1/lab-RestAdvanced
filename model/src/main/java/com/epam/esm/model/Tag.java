@@ -10,7 +10,7 @@ public class Tag {
     @GeneratedValue
     private Long id;
 
-    @Column(name = "name", nullable = false, length = 150)
+    @Column(name = "name", nullable = false, length = 30)
     private String name;
 
     public Tag() {
@@ -22,10 +22,6 @@ public class Tag {
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getName() {

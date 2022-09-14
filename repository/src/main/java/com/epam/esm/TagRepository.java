@@ -10,16 +10,25 @@ import javax.persistence.Query;
 import java.util.List;
 
 @Repository
-public class TagRepository {
+public class TagRepository implements TagDAO {
 
     private EntityManager entityManager;
     private EntityManagerFactory emf;
 
     public TagRepository() {
-        emf = Persistence.createEntityManagerFactory("tag_pu");
+        emf = Persistence.createEntityManagerFactory("pu");
         this.entityManager = emf.createEntityManager();
     }
 
+    @Override
+    public List<Tag> findAll() {
+        entityManager.getTransaction().begin();
+        Query query = entityManager.createQuery("Select t from Tag t");
+        entityManager.getTransaction().commit();
+        return query.getResultList();
+    }
+
+    @Override
     public Tag add(Tag tag) {
         entityManager.getTransaction().begin();
         entityManager.persist(tag);
@@ -27,25 +36,20 @@ public class TagRepository {
         return tag;
     }
 
+    @Override
     public Tag find(Long id) {
         return entityManager.find(Tag.class, id);
     }
 
-    public void close() {
-        this.entityManager.close();
-        this.emf.close();
-    }
-
+    @Override
     public void delete(Tag tag) {
         entityManager.getTransaction().begin();
         entityManager.remove(tag);
         entityManager.getTransaction().commit();
     }
 
-    public List<Tag> findAll() {
-        entityManager.getTransaction().begin();
-        Query query = entityManager.createQuery("Select t from Tag t");
-        entityManager.getTransaction().commit();
-        return query.getResultList();
+    public void close() {
+        this.entityManager.close();
+        this.emf.close();
     }
 }

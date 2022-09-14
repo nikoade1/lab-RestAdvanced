@@ -1,5 +1,6 @@
 package com.epam.esm.service;
 
+import com.epam.esm.TagDAO;
 import com.epam.esm.TagRepository;
 import com.epam.esm.model.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,10 +10,10 @@ import java.util.List;
 
 @Service
 public class TagService {
-    private final TagRepository tagDAO;
+    private final TagDAO tagDAO;
 
     @Autowired
-    public TagService(TagRepository tagDao) {
+    public TagService(TagDAO tagDao) {
         this.tagDAO = tagDao;
     }
 
@@ -24,7 +25,7 @@ public class TagService {
         return tagDAO.findAll();
     }
 
-    public Tag get(long id) {
+    public Tag find(long id) {
         return tagDAO.find(id);
     }
 
@@ -32,4 +33,8 @@ public class TagService {
         tagDAO.delete(tag);
     }
 
+    public void deleteById(long id) {
+        Tag tag = find(id);
+        delete(tag);
+    }
 }
