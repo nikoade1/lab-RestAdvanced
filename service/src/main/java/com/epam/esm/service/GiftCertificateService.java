@@ -6,7 +6,10 @@ import com.epam.esm.model.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.ManyToMany;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class GiftCertificateService {
@@ -42,4 +45,5 @@ public class GiftCertificateService {
         GiftCertificate giftCertificate = find(id);
         delete(giftCertificate);
     }
+
 }

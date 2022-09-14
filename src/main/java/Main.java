@@ -1,22 +1,30 @@
+import com.epam.esm.GiftCertificateRepository;
 import com.epam.esm.TagRepository;
+import com.epam.esm.model.GiftCertificate;
 import com.epam.esm.model.Tag;
 
 public class Main {
     public static void main(String... args) {
-        TagRepository repository = new TagRepository();
+        TagRepository tagRepository = new TagRepository();
+        GiftCertificateRepository giftCertificateRepository = new GiftCertificateRepository();
 
         Tag tag = new Tag("jim");
-        repository.add(tag);
-        System.out.println("Added tag " + tag);
-
-        tag = repository.find(tag.getId());
-        System.out.println("Found student " + tag);
-
         Tag tag2 = new Tag("bob");
-        repository.add(tag2);
-        System.out.println("Added tag " + tag2);
+        Tag tag3 = new Tag("blake");
 
-        repository.findAll().forEach(System.out::println);
+        GiftCertificate jimBirthday = new GiftCertificate("jim", "as", 10, 4);
+        GiftCertificate bobBirthday = new GiftCertificate("bob", "ad", 14, 1);
+
+        jimBirthday.addTag(tag);
+        jimBirthday.addTag(tag2);
+        bobBirthday.addTag(tag2);
+
+        tagRepository.add(tag);
+        tagRepository.add(tag2);
+        tagRepository.add(tag3);
+
+        giftCertificateRepository.add(jimBirthday);
+        giftCertificateRepository.add(bobBirthday);
 
     }
 }

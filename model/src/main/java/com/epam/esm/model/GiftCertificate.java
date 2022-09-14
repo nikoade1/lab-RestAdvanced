@@ -2,13 +2,15 @@ package com.epam.esm.model;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "gift_certificates")
 public class GiftCertificate {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false, length = 30)
@@ -22,9 +24,17 @@ public class GiftCertificate {
     private LocalDateTime create_date;
     private LocalDateTime last_update_date;
 
+    @ManyToMany
+    @JoinTable(
+            name = "giftCertificate_tag",
+            joinColumns = @JoinColumn(name = "giftCertificate_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id"))
+    private Set<Tag> tags;
+
     public GiftCertificate() {
         this.create_date = LocalDateTime.now();
         this.last_update_date = this.create_date;
+        this.tags = new HashSet<>();
     }
 
     public GiftCertificate(String name, String description, double price, int duration) {
@@ -82,6 +92,28 @@ public class GiftCertificate {
     }
     public LocalDateTime getLast_update_date() {
         return last_update_date;
+    }
+
+    public void addTag(Tag tag) {
+        boolean added = tags.add(tag);
+        if (added) {
+            tag.getGiftCertificates().add(this);
+        }
+    }
+
+    public void removeTag(Tag tag) {
+        boolean removed = tags.remove(tag);
+        if (removed) {
+            tag.getGiftCertificates().remove(this);
+        }
+    }
+
+    public Set<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(Set<Tag> tags) {
+        this.tags = tags;
     }
 
 }
