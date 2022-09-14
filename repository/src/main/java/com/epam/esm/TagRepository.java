@@ -12,11 +12,11 @@ import java.util.List;
 @Repository
 public class TagRepository implements TagDAO {
 
-    private EntityManager entityManager;
-    private EntityManagerFactory emf;
+    private final EntityManager entityManager;
+    private final EntityManagerFactory emf;
 
     public TagRepository() {
-        emf = Persistence.createEntityManagerFactory("pu");
+        this.emf = Persistence.createEntityManagerFactory("pu");
         this.entityManager = emf.createEntityManager();
     }
 
@@ -39,6 +39,14 @@ public class TagRepository implements TagDAO {
     @Override
     public Tag find(Long id) {
         return entityManager.find(Tag.class, id);
+    }
+
+    @Override
+    public List<Tag> findByName(String name) {
+        entityManager.getTransaction().begin();
+        Query query = entityManager.createQuery("Select t.id from Tag t where t.name = " + name);
+        entityManager.getTransaction().commit();
+        return query.getResultList();
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.epam.esm.model;
 
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,7 +13,7 @@ public class Tag {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", nullable = false, length = 30)
+    @Column(name = "name", unique = true, nullable = false, length = 30)
     private String name;
 
     @ManyToMany(mappedBy = "tags")
@@ -48,7 +49,14 @@ public class Tag {
     public void addGiftCertificate(GiftCertificate giftCertificate) {
         boolean added = giftCertificates.add(giftCertificate);
         if (added) {
-            giftCertificate.addTag(this);
+            giftCertificate.getTags().add(this);
+        }
+    }
+
+    public void addAllGiftCertificates(Collection<GiftCertificate> newGiftCertificates) {
+        boolean added = giftCertificates.addAll(newGiftCertificates);
+        if (added) {
+            newGiftCertificates.forEach(gc -> gc.getTags().add(this));
         }
     }
 

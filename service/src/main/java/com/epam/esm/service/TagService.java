@@ -1,7 +1,6 @@
 package com.epam.esm.service;
 
 import com.epam.esm.TagDAO;
-import com.epam.esm.TagRepository;
 import com.epam.esm.model.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,5 +35,9 @@ public class TagService {
     public void deleteById(long id) {
         Tag tag = find(id);
         delete(tag);
+    }
+
+    public List<Tag> findByName(String name) {
+        return this.tagDAO.findByName(name);
     }
 }

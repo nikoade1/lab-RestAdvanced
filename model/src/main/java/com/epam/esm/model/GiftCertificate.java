@@ -2,6 +2,7 @@ package com.epam.esm.model;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -90,6 +91,7 @@ public class GiftCertificate {
     public LocalDateTime getCreate_date() {
         return create_date;
     }
+
     public LocalDateTime getLast_update_date() {
         return last_update_date;
     }
@@ -98,6 +100,13 @@ public class GiftCertificate {
         boolean added = tags.add(tag);
         if (added) {
             tag.getGiftCertificates().add(this);
+        }
+    }
+
+    public void addAllTags(Collection<Tag> newTags) {
+        boolean added = tags.addAll(newTags);
+        if (added) {
+            newTags.forEach(t -> t.getGiftCertificates().add(this));
         }
     }
 
@@ -115,5 +124,4 @@ public class GiftCertificate {
     public void setTags(Set<Tag> tags) {
         this.tags = tags;
     }
-
 }

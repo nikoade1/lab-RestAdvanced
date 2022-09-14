@@ -10,10 +10,10 @@ import javax.persistence.Query;
 import java.util.List;
 
 @Repository
-public class GiftCertificateRepository implements GiftCertificateDAO{
+public class GiftCertificateRepository implements GiftCertificateDAO {
 
-    private EntityManager entityManager;
-    private EntityManagerFactory emf;
+    private final EntityManager entityManager;
+    private final EntityManagerFactory emf;
 
     public GiftCertificateRepository() {
         emf = Persistence.createEntityManagerFactory("pu");
@@ -44,7 +44,7 @@ public class GiftCertificateRepository implements GiftCertificateDAO{
 
     @Override
     public GiftCertificate update(GiftCertificate giftCertificate) {
-        GiftCertificate toUpdate = find(giftCertificate.getId() );
+        GiftCertificate toUpdate = find(giftCertificate.getId());
         entityManager.getTransaction().begin();
 
         toUpdate.setName(giftCertificate.getName());
@@ -62,7 +62,7 @@ public class GiftCertificateRepository implements GiftCertificateDAO{
     }
 
     public void close() {
-        this.emf.close();
         this.entityManager.close();
+        this.emf.close();
     }
 }

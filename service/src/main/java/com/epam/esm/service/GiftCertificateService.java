@@ -3,22 +3,23 @@ package com.epam.esm.service;
 import com.epam.esm.GiftCertificateDAO;
 import com.epam.esm.model.GiftCertificate;
 import com.epam.esm.model.Tag;
+import com.epam.esm.model.WrapperGiftTags;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.ManyToMany;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class GiftCertificateService {
 
-    private GiftCertificateDAO giftCertificateDAO;
+    private final GiftCertificateDAO giftCertificateDAO;
+    private final TagService tagService;
 
     @Autowired
-    public GiftCertificateService(GiftCertificateDAO giftCertificateDAO) {
+    public GiftCertificateService(GiftCertificateDAO giftCertificateDAO, TagService tagService) {
         this.giftCertificateDAO = giftCertificateDAO;
+        this.tagService = tagService;
     }
 
     public List<GiftCertificate> findAll() {
@@ -46,4 +47,16 @@ public class GiftCertificateService {
         delete(giftCertificate);
     }
 
+    public GiftCertificate addWithTags(WrapperGiftTags wrapperGiftTags) {
+        GiftCertificate giftCertificate = wrapperGiftTags.getGiftCertificate();
+        List<Tag> tags = wrapperGiftTags.getTags();
+        List<Tag> newTags = tags.stream()
+                .filter(tag -> tagService.findByName(tag.getName()).isEmpty())
+                .collect(Collectors.toList());
+
+        newTags.forEach(tagService::add);
+        giftCertificate.addAllTags(tags);
+
+        return this.giftCertificateDAO.add(giftCertificate);
+    }
 }

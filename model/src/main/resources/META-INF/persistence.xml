@@ -3,6 +3,8 @@
 
         <class>com.epam.esm.model.Tag</class>
         <class>com.epam.esm.model.GiftCertificate</class>
+        <class>com.epam.esm.model.User</class>
+        <class>com.epam.esm.model.Order</class>
 
         <properties>
             <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/Rest-Advanced"/>

@@ -1,6 +1,7 @@
 package com.epam.esm.controller;
 
 import com.epam.esm.model.GiftCertificate;
+import com.epam.esm.model.WrapperGiftTags;
 import com.epam.esm.service.GiftCertificateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -30,10 +31,17 @@ public class GiftCertificateController {
     @PostMapping("/add")
     public ResponseEntity<?> add(@Valid @RequestBody GiftCertificate giftCertificate, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            System.out.println("jim");
             return ResponseEntity.badRequest().body(giftCertificate);
         }
         return ResponseEntity.ok(this.giftCertificateService.add(giftCertificate));
+    }
+
+    @PostMapping("/addWithTags")
+    public ResponseEntity<?> addWithTags(@Valid @RequestBody WrapperGiftTags wrapperGiftTags, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.badRequest().body(wrapperGiftTags);
+        }
+        return ResponseEntity.ok(this.giftCertificateService.addWithTags(wrapperGiftTags));
     }
 
     @GetMapping("/{id}")

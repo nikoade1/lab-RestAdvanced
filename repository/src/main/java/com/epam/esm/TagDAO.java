@@ -14,4 +14,5 @@ public interface TagDAO {
 
     void delete(Tag tag);
 
+    List<Tag> findByName(String name);
 }

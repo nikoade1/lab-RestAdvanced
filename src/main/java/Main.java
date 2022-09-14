@@ -8,9 +8,9 @@ public class Main {
         TagRepository tagRepository = new TagRepository();
         GiftCertificateRepository giftCertificateRepository = new GiftCertificateRepository();
 
-        Tag tag = new Tag("jim");
-        Tag tag2 = new Tag("bob");
-        Tag tag3 = new Tag("blake");
+        Tag tag = new Tag("ronaldo");
+        Tag tag2 = new Tag("khvicha");
+        Tag tag3 = new Tag("messi");
 
         GiftCertificate jimBirthday = new GiftCertificate("jim", "as", 10, 4);
         GiftCertificate bobBirthday = new GiftCertificate("bob", "ad", 14, 1);
