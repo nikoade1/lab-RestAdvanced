@@ -1,5 +1,6 @@
-package com.epam.esm;
+package com.epam.esm.impl;
 
+import com.epam.esm.GiftCertificateDAO;
 import com.epam.esm.model.GiftCertificate;
 import org.springframework.stereotype.Repository;
 

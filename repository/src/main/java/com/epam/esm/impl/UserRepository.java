@@ -1,5 +1,6 @@
-package com.epam.esm;
+package com.epam.esm.impl;
 
+import com.epam.esm.UserDAO;
 import org.apache.catalina.User;
 import org.springframework.stereotype.Repository;
 

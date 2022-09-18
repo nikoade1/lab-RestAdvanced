@@ -1,6 +1,8 @@
 package com.epam.esm.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.HashSet;
@@ -16,6 +18,7 @@ public class Tag {
     @Column(name = "name", unique = true, nullable = false, length = 30)
     private String name;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "tags")
     private Set<GiftCertificate> giftCertificates;
 

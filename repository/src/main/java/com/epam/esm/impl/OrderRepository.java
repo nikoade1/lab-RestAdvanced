@@ -1,5 +1,6 @@
-package com.epam.esm;
+package com.epam.esm.impl;
 
+import com.epam.esm.OrderDAO;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
