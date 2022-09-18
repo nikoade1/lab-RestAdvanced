@@ -30,7 +30,6 @@ public class TagController {
     @PostMapping("/add")
     public ResponseEntity<?> add(@Valid @RequestBody Tag tag, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            System.out.println("jim");
             return ResponseEntity.badRequest().body(tag);
         }
         return ResponseEntity.ok(this.tagService.add(tag));

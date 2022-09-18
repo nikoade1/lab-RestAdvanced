@@ -1,6 +1,6 @@
-package com.epam.esm.impl;
+package com.epam.esm.repository.impl;
 
-import com.epam.esm.GiftCertificateDAO;
+import com.epam.esm.repository.GiftCertificateDAO;
 import com.epam.esm.model.GiftCertificate;
 import org.springframework.stereotype.Repository;
 
@@ -51,6 +51,7 @@ public class GiftCertificateRepository implements GiftCertificateDAO {
         toUpdate.setName(giftCertificate.getName());
         toUpdate.setDescription(giftCertificate.getDescription());
         toUpdate.setDuration(giftCertificate.getDuration());
+        toUpdate.setPrice(giftCertificate.getPrice());
         entityManager.getTransaction().commit();
         return toUpdate;
     }

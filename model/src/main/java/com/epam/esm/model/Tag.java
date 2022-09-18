@@ -15,7 +15,7 @@ public class Tag {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", unique = true, nullable = false, length = 30)
+    @Column(unique = true, nullable = false, length = 30)
     private String name;
 
     @JsonIgnore

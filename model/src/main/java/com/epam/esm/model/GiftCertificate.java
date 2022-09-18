@@ -25,7 +25,10 @@ public class GiftCertificate {
     private LocalDateTime create_date;
     private LocalDateTime last_update_date;
 
-    @ManyToMany
+    @ManyToMany(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    })
     @JoinTable(
             name = "giftCertificate_tag",
             joinColumns = @JoinColumn(name = "giftCertificate_id"),
@@ -108,6 +111,7 @@ public class GiftCertificate {
         if (added) {
             newTags.forEach(t -> t.getGiftCertificates().add(this));
         }
+        System.out.println("new tags added in giftCertificate object " + newTags);
     }
 
     public void removeTag(Tag tag) {
@@ -123,5 +127,18 @@ public class GiftCertificate {
 
     public void setTags(Set<Tag> tags) {
         this.tags = tags;
+    }
+
+    @Override
+    public String toString() {
+        return "GiftCertificate{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                ", duration=" + duration +
+                ", create_date=" + create_date +
+                ", last_update_date=" + last_update_date +
+                ", tags = " + tags;
     }
 }

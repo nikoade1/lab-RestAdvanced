@@ -1,7 +1,6 @@
-package com.epam.esm.impl;
+package com.epam.esm.repository.impl;
 
-import com.epam.esm.UserDAO;
-import org.apache.catalina.User;
+import com.epam.esm.repository.OrderDAO;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -9,12 +8,12 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 @Repository
-public class UserRepository implements UserDAO {
+public class OrderRepository implements OrderDAO {
 
     private final EntityManager entityManager;
     private final EntityManagerFactory emf;
 
-    public UserRepository() {
+    public OrderRepository() {
         this.emf = Persistence.createEntityManagerFactory("pu");
         this.entityManager = emf.createEntityManager();
     }

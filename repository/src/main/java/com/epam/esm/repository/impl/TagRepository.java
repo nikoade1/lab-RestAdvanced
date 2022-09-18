@@ -1,6 +1,6 @@
-package com.epam.esm.impl;
+package com.epam.esm.repository.impl;
 
-import com.epam.esm.TagDAO;
+import com.epam.esm.repository.TagDAO;
 import com.epam.esm.model.Tag;
 import org.springframework.stereotype.Repository;
 
@@ -45,7 +45,7 @@ public class TagRepository implements TagDAO {
     @Override
     public List<Tag> findByName(String name) {
         entityManager.getTransaction().begin();
-        Query query = entityManager.createQuery("Select t.id from Tag t where t.name = " + name);
+        Query query = entityManager.createQuery("Select t from Tag t where t.name = '" + name + "'");
         entityManager.getTransaction().commit();
         return query.getResultList();
     }

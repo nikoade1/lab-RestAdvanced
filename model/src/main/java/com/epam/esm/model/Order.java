@@ -1,5 +1,7 @@
 package com.epam.esm.model;
 
+import jdk.nashorn.internal.objects.annotations.Setter;
+
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.HashSet;
