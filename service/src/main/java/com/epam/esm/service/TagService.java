@@ -1,6 +1,6 @@
 package com.epam.esm.service;
 
-import com.epam.esm.exceptions.TagNotFoundException;
+import com.epam.esm.exceptions.ItemNotFoundException;
 import com.epam.esm.model.Tag;
 import com.epam.esm.repository.TagDAO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +25,9 @@ public class TagService {
         return this.tagDAO.findAll();
     }
 
-    public Tag find(long id) throws TagNotFoundException {
+    public Tag find(long id) throws ItemNotFoundException {
         Tag response = this.tagDAO.find(id);
-        if (response == null) throw new TagNotFoundException("Tag with id " + id + "not found");
+        if (response == null) throw new ItemNotFoundException("Tag with id " + id + "not found");
         return response;
     }
 
@@ -35,7 +35,7 @@ public class TagService {
         this.tagDAO.delete(tag);
     }
 
-    public void deleteById(long id) throws TagNotFoundException {
+    public void deleteById(long id) throws ItemNotFoundException {
         Tag tag = find(id);
         delete(tag);
     }

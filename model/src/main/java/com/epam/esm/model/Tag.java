@@ -79,6 +79,10 @@ public class Tag extends RepresentationModel<Tag> {
         }
     }
 
+    public Tag copy() {
+        return new Tag(this.getId(), this.getName());
+    }
+
     public Set<GiftCertificate> getGiftCertificates() {
         return giftCertificates;
     }

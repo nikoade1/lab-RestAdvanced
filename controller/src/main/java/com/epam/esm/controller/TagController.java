@@ -1,6 +1,6 @@
 package com.epam.esm.controller;
 
-import com.epam.esm.exceptions.TagNotFoundException;
+import com.epam.esm.exceptions.ItemNotFoundException;
 import com.epam.esm.model.Tag;
 import com.epam.esm.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,10 +33,10 @@ public class TagController {
         List<Tag> tags = this.tagService.findAll();
         List<Tag> response = new ArrayList<>();
         tags.forEach(tag -> {
-            Tag copy = new Tag(tag.getId(), tag.getName());
+            Tag copy = tag.copy();
             try {
                 copy.add(linkTo(methodOn(TagController.class).find(tag.getId())).withSelfRel());
-            } catch (TagNotFoundException e) {
+            } catch (ItemNotFoundException e) {
                 throw new RuntimeException(e);
             }
             response.add(copy);
@@ -52,15 +52,15 @@ public class TagController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Tag> find(@PathVariable("id") Long id) throws TagNotFoundException {
+    public ResponseEntity<Tag> find(@PathVariable("id") Long id) throws ItemNotFoundException {
         Tag tag = this.tagService.find(id);
-        Tag copy = new Tag(tag.getId(), tag.getName());
-        copy.add(linkTo(methodOn(TagController.class).findAll()).withRel("link to all Tags"));
-        return ResponseEntity.ok(copy);
+        Tag response = tag.copy();
+        response.add(linkTo(methodOn(TagController.class).findAll()).withRel("link to all Tags"));
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ModelAndView delete(@PathVariable("id") Long id) throws TagNotFoundException {
+    public ModelAndView delete(@PathVariable("id") Long id) throws ItemNotFoundException {
         this.tagService.deleteById(id);
         return new ModelAndView("redirect:/tags");
     }

@@ -1,6 +1,9 @@
 package com.epam.esm.model;
 
+import org.springframework.hateoas.RepresentationModel;
+
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashSet;
@@ -8,19 +11,25 @@ import java.util.Set;
 
 @Entity
 @Table(name = "gift_certificates")
-public class GiftCertificate {
+public class GiftCertificate extends RepresentationModel<GiftCertificate> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
     @Column(nullable = false, length = 30)
     private String name;
 
     @Column(length = 100)
     private String description;
 
+    @Min(1)
+    @Max(10000)
     private double price;
+
+    @Min(4)
+    @Max(100)
     private int duration;
     private LocalDateTime create_date;
     private LocalDateTime last_update_date;
@@ -41,8 +50,9 @@ public class GiftCertificate {
         this.tags = new HashSet<>();
     }
 
-    public GiftCertificate(String name, String description, double price, int duration) {
+    public GiftCertificate(Long id, String name, String description, double price, int duration) {
         this();
+        this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
@@ -111,7 +121,15 @@ public class GiftCertificate {
         if (added) {
             newTags.forEach(t -> t.getGiftCertificates().add(this));
         }
-        System.out.println("new tags added in giftCertificate object " + newTags);
+    }
+
+    public GiftCertificate copy() {
+        return new GiftCertificate(
+                this.getId(),
+                this.getName(),
+                this.getDescription(),
+                this.getPrice(),
+                this.getDuration());
     }
 
     public void removeTag(Tag tag) {

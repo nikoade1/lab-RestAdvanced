@@ -13,7 +13,6 @@ public class Main {
         TagService ts = new TagService(tagRepository);
 
         List<Tag> ls = ts.findAll();
-        System.out.println(ls.get(0).getLinks());
 
     }
 }
