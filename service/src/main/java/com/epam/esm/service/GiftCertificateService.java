@@ -1,14 +1,11 @@
 package com.epam.esm.service;
 
-import com.epam.esm.repository.GiftCertificateDAO;
 import com.epam.esm.model.GiftCertificate;
-import com.epam.esm.model.Tag;
+import com.epam.esm.repository.GiftCertificateDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class GiftCertificateService {

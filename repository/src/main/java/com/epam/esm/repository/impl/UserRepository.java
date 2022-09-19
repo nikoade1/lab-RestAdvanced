@@ -17,4 +17,6 @@ public class UserRepository implements UserDAO {
         this.emf = Persistence.createEntityManagerFactory("pu");
         this.entityManager = emf.createEntityManager();
     }
+
+
 }

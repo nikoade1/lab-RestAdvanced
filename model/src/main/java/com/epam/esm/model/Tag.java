@@ -2,19 +2,23 @@ package com.epam.esm.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "tags")
-public class Tag {
+public class Tag extends RepresentationModel<Tag> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
     @Column(unique = true, nullable = false, length = 30)
     private String name;
 
@@ -24,6 +28,11 @@ public class Tag {
 
     public Tag() {
         giftCertificates = new HashSet<>();
+    }
+
+    public Tag(Long id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
     public Tag(String name) {

@@ -1,7 +1,7 @@
 package com.epam.esm.repository.impl;
 
-import com.epam.esm.repository.GiftCertificateDAO;
 import com.epam.esm.model.GiftCertificate;
+import com.epam.esm.repository.GiftCertificateDAO;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;

@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping("/giftCertificates")
@@ -23,9 +22,11 @@ public class GiftCertificateController {
     }
 
     @GetMapping
-    public ResponseEntity<List<GiftCertificate>> findAll() {
+    public ResponseEntity<?> findAll() {
+
         return ResponseEntity.ok(this.giftCertificateService.findAll());
     }
+
 
     @PostMapping("/add")
     public ResponseEntity<?> add(@Valid @RequestBody GiftCertificate giftCertificate, BindingResult bindingResult) {
@@ -36,12 +37,12 @@ public class GiftCertificateController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<GiftCertificate> find(@PathVariable("id") long id) {
+    public ResponseEntity<?> find(@PathVariable("id") long id) {
         return ResponseEntity.ok(this.giftCertificateService.find(id));
     }
 
     @PatchMapping("/update")
-    public ResponseEntity<GiftCertificate> update(@RequestBody GiftCertificate giftCertificate) {
+    public ResponseEntity<?> update(@RequestBody GiftCertificate giftCertificate) {
         return ResponseEntity.ok(this.giftCertificateService.update(giftCertificate));
     }
 
