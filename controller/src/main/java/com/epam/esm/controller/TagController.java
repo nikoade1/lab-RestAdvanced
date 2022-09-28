@@ -2,6 +2,7 @@ package com.epam.esm.controller;
 
 import com.epam.esm.exceptions.ItemNotFoundException;
 import com.epam.esm.model.Tag;
+import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,14 +23,16 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class TagController {
 
     private final TagService tagService;
+    private final GiftCertificateService giftCertificateService;
 
     @Autowired
-    public TagController(TagService tagService) {
+    public TagController(TagService tagService, GiftCertificateService giftCertificateService) {
+        this.giftCertificateService = giftCertificateService;
         this.tagService = tagService;
     }
 
     @GetMapping()
-    public ResponseEntity<List<Tag>> findAll(){
+    public ResponseEntity<List<Tag>> findAll() {
         List<Tag> tags = this.tagService.findAll();
         List<Tag> response = new ArrayList<>();
         tags.forEach(tag -> {
@@ -49,6 +52,11 @@ public class TagController {
         Tag response = this.tagService.add(tag)
                 .add(linkTo(methodOn(TagController.class).findAll()).withRel("link to all Tags"));
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}/giftCertificates")
+    public ResponseEntity<?> getGiftCertificatesByTagId(@PathVariable Long id) {
+        return new ResponseEntity<>(null, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

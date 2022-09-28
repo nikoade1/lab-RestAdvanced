@@ -16,51 +16,56 @@ public class GiftCertificateRepository implements GiftCertificateDAO {
     private final EntityManager entityManager;
     private final EntityManagerFactory emf;
 
+
     public GiftCertificateRepository() {
-        emf = Persistence.createEntityManagerFactory("pu");
-        this.entityManager = emf.createEntityManager();
+        this.emf = Persistence.createEntityManagerFactory("pu");
+        this.entityManager = this.emf.createEntityManager();
     }
 
     @Override
     public List<GiftCertificate> findAll() {
-        entityManager.getTransaction().begin();
-        Query query = entityManager.createQuery("Select gc from GiftCertificate gc");
-        entityManager.getTransaction().commit();
+        this.entityManager.getTransaction().begin();
+        Query query = this.entityManager.createQuery("Select gc from GiftCertificate gc");
+        this.entityManager.getTransaction().commit();
         return query.getResultList();
     }
 
     @Override
     public GiftCertificate add(GiftCertificate giftCertificate) {
-        entityManager.getTransaction().begin();
-        entityManager.persist(giftCertificate);
-        entityManager.getTransaction().commit();
+        this.entityManager.getTransaction().begin();
+        this.entityManager.persist(giftCertificate);
+        this.entityManager.getTransaction().commit();
         return giftCertificate;
     }
 
     @Override
     public GiftCertificate find(Long id) {
-        return entityManager.find(GiftCertificate.class, id);
+        return this.entityManager.find(GiftCertificate.class, id);
     }
 
 
     @Override
     public GiftCertificate update(GiftCertificate giftCertificate) {
         GiftCertificate toUpdate = find(giftCertificate.getId());
-        entityManager.getTransaction().begin();
-
+        this.entityManager.getTransaction().begin();
         toUpdate.setName(giftCertificate.getName());
         toUpdate.setDescription(giftCertificate.getDescription());
         toUpdate.setDuration(giftCertificate.getDuration());
         toUpdate.setPrice(giftCertificate.getPrice());
-        entityManager.getTransaction().commit();
+        this.entityManager.getTransaction().commit();
         return toUpdate;
     }
 
     @Override
+    public void merge(GiftCertificate giftCertificate) {
+        this.entityManager.merge(giftCertificate);
+    }
+
+    @Override
     public void delete(GiftCertificate giftCertificate) {
-        entityManager.getTransaction().begin();
-        entityManager.remove(giftCertificate);
-        entityManager.getTransaction().commit();
+        this.entityManager.getTransaction().begin();
+        this.entityManager.remove(giftCertificate);
+        this.entityManager.getTransaction().commit();
     }
 
     public void close() {

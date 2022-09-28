@@ -1,61 +1,106 @@
 package com.epam.esm.model;
 
 import javax.persistence.*;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import javax.validation.constraints.*;
+import java.time.LocalDateTime;
+import java.util.Objects;
 
-@Entity
 @Table(name = "orders")
+@Entity
 public class Order {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Double price;
+    @Column(name = "purchase_date")
+    private LocalDateTime purchaseDate;
 
-    @ManyToMany(mappedBy = "orders")
-    private Set<User> users;
+    @Min(1)
+    @Max(10000)
+    private double cost;
+
+    @ManyToOne
+    @JoinColumn(name = "certificate_id")
+    private GiftCertificate giftCertificate;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public Order() {
-        this.users = new HashSet<>();
+        this.purchaseDate = LocalDateTime.now();
     }
 
-
-    public Double getPrice() {
-        return price;
+    public Order(GiftCertificate giftCertificate) {
+        this();
+        this.giftCertificate = giftCertificate;
+        this.cost = giftCertificate.getPrice();
     }
 
-    public void setPrice(Double price) {
-        this.price = price;
+    public LocalDateTime getPurchaseDate() {
+        return purchaseDate;
     }
 
-    public void addUser(User user) {
-        boolean added = this.users.add(user);
-        if (added) {
-            user.getOrders().add(this);
-        }
+    public void setPurchaseDate(LocalDateTime purchaseDate) {
+        this.purchaseDate = purchaseDate;
     }
 
-    public void addAllUsers(Collection<User> newUsers) {
-        boolean added = users.addAll(newUsers);
-        if (added) {
-            newUsers.forEach(u -> u.getOrders().add(this));
-        }
+    public double getCost() {
+        return cost;
     }
 
-    public void removeUser(User user) {
-        boolean removed = this.users.remove(user);
-        if (removed) {
-            user.getOrders().remove(this);
-        }
+    public void setCost(double cost) {
+        this.cost = cost;
     }
 
-    public Set<User> getUsers() {
-        return users;
+    public User getUser() {
+        return user;
     }
 
-    public void setUsers(Set<User> users) {
-        this.users = users;
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public GiftCertificate getGiftCertificate() {
+        return giftCertificate;
+    }
+
+    public void setGiftCertificate(GiftCertificate giftCertificate) {
+        this.giftCertificate = giftCertificate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Order)) return false;
+        Order order = (Order) o;
+        return Double.compare(order.getCost(), getCost()) == 0
+                && Objects.equals(getId(), order.getId())
+                && Objects.equals(getPurchaseDate(), order.getPurchaseDate());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getPurchaseDate(), getCost());
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id=" + id +
+                ", purchaseDate=" + purchaseDate +
+                ", cost=" + cost +
+                ", giftCertificate=" + giftCertificate +
+                ", user=" + user +
+                '}';
     }
 }

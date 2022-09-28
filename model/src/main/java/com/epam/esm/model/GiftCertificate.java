@@ -3,9 +3,11 @@ package com.epam.esm.model;
 import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,6 +20,7 @@ public class GiftCertificate extends RepresentationModel<GiftCertificate> {
     private Long id;
 
     @NotNull
+    @Size(min = 1, max = 30)
     @Column(nullable = false, length = 30)
     private String name;
 
@@ -41,7 +44,8 @@ public class GiftCertificate extends RepresentationModel<GiftCertificate> {
     @JoinTable(
             name = "giftCertificate_tag",
             joinColumns = @JoinColumn(name = "giftCertificate_id"),
-            inverseJoinColumns = @JoinColumn(name = "tag_id"))
+            inverseJoinColumns = @JoinColumn(name = "tag_id"),
+            uniqueConstraints = @UniqueConstraint(columnNames = {"giftCertificate_id", "tag_id"}))
     private Set<Tag> tags;
 
     public GiftCertificate() {
@@ -50,21 +54,22 @@ public class GiftCertificate extends RepresentationModel<GiftCertificate> {
         this.tags = new HashSet<>();
     }
 
-    public GiftCertificate(Long id, String name, String description, double price, int duration) {
+    public GiftCertificate(Long id, String name, String description, double price, int duration, Set<Tag> tags) {
         this();
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
         this.duration = duration;
+        this.tags = tags;
     }
 
     public Long getId() {
-        return id;
+        return this.id;
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public void setName(String name) {
@@ -72,7 +77,7 @@ public class GiftCertificate extends RepresentationModel<GiftCertificate> {
     }
 
     public String getDescription() {
-        return description;
+        return this.description;
     }
 
     public void setDescription(String description) {
@@ -80,7 +85,7 @@ public class GiftCertificate extends RepresentationModel<GiftCertificate> {
     }
 
     public double getPrice() {
-        return price;
+        return this.price;
     }
 
     public void setPrice(double price) {
@@ -93,7 +98,7 @@ public class GiftCertificate extends RepresentationModel<GiftCertificate> {
     }
 
     public int getDuration() {
-        return duration;
+        return this.duration;
     }
 
     public void setDuration(int duration) {
@@ -109,17 +114,32 @@ public class GiftCertificate extends RepresentationModel<GiftCertificate> {
         return last_update_date;
     }
 
+    public Set<Tag> getTags() {
+        return this.tags;
+    }
+
+    public void setTags(Set<Tag> tags) {
+        this.tags = tags;
+    }
+
     public void addTag(Tag tag) {
-        boolean added = tags.add(tag);
-        if (added) {
-            tag.getGiftCertificates().add(this);
+        this.tags.add(tag);
+        tag.getGiftCertificates().add(this);
+    }
+
+    public void removeTag(Long tagId) {
+        Tag tag = this.tags.stream().filter(t -> t.getId() == tagId).findFirst().orElse(null);
+        if (tag != null) {
+            this.tags.remove(tag);
+            tag.getGiftCertificates().remove(this);
         }
     }
 
-    public void addAllTags(Collection<Tag> newTags) {
-        boolean added = tags.addAll(newTags);
-        if (added) {
-            newTags.forEach(t -> t.getGiftCertificates().add(this));
+    public void removeTag(String name) {
+        Tag tag = this.tags.stream().filter(t -> t.getName().equals(name)).findFirst().orElse(null);
+        if (tag != null) {
+            this.tags.remove(tag);
+            tag.getGiftCertificates().remove(this);
         }
     }
 
@@ -129,34 +149,48 @@ public class GiftCertificate extends RepresentationModel<GiftCertificate> {
                 this.getName(),
                 this.getDescription(),
                 this.getPrice(),
-                this.getDuration());
+                this.getDuration(),
+                this.getTags());
     }
 
-    public void removeTag(Tag tag) {
-        boolean removed = tags.remove(tag);
-        if (removed) {
-            tag.getGiftCertificates().remove(this);
-        }
-    }
-
-    public Set<Tag> getTags() {
-        return tags;
-    }
-
-    public void setTags(Set<Tag> tags) {
-        this.tags = tags;
-    }
 
     @Override
     public String toString() {
         return "GiftCertificate{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", price=" + price +
-                ", duration=" + duration +
-                ", create_date=" + create_date +
-                ", last_update_date=" + last_update_date +
-                ", tags = " + tags;
+                "id=" + this.id +
+                ", name='" + this.name + '\'' +
+                ", description='" + this.description + '\'' +
+                ", price=" + this.price +
+                ", duration=" + this.duration +
+                ", create_date=" + this.create_date +
+                ", last_update_date=" + this.last_update_date +
+                ", tags = " + this.tags;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (!(obj instanceof GiftCertificate)) return false;
+        GiftCertificate giftCertificate = (GiftCertificate) obj;
+
+        return this.getId() == giftCertificate.getId()
+                && this.getName().equals(giftCertificate.getName())
+                && this.getDescription().equals(giftCertificate.getDescription())
+                && this.getPrice() == giftCertificate.getPrice()
+                && this.getDuration() == giftCertificate.getDuration()
+                && this.getCreate_date().equals(giftCertificate.getCreate_date())
+                && this.getLast_update_date().equals(giftCertificate.getLast_update_date());
+    }
+
+    @Override
+    public int hashCode() {
+        String code = this.getId().toString()
+                + this.getName()
+                + this.getDescription()
+                + this.getPrice()
+                + this.getDuration()
+                + this.getCreate_date()
+                + this.getLast_update_date();
+        return code.hashCode();
     }
 }

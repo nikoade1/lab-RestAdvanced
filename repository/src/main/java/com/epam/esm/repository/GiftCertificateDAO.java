@@ -15,4 +15,6 @@ public interface GiftCertificateDAO {
     void delete(GiftCertificate giftCertificate);
 
     GiftCertificate update(GiftCertificate giftCertificate);
+
+    void merge(GiftCertificate giftCertificate);
 }

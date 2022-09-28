@@ -22,11 +22,20 @@ public class ApplicationExceptionHandler {
         return errorMap;
     }
 
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(ItemNotFoundException.class)
-    public Map<String, String> handleBusinessException(ItemNotFoundException ex) {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ExceptionHandler({ItemNotFoundException.class})
+    public Map<String, String> handleNotFoundException(ItemNotFoundException ex) {
         Map<String, String> errorMap = new HashMap<>();
         errorMap.put("errorMessage", ex.getMessage());
         return errorMap;
     }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(IdNotProvidedException.class)
+    public Map<String, String> handleIdNotProvidedException(IdNotProvidedException ex) {
+        Map<String, String> errorMap = new HashMap<>();
+        errorMap.put("errorMessage", ex.getMessage());
+        return errorMap;
+    }
+
 }

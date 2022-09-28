@@ -1,13 +1,10 @@
 package com.epam.esm.model;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -35,11 +32,6 @@ public class Tag extends RepresentationModel<Tag> {
         this.name = name;
     }
 
-    public Tag(String name) {
-        this();
-        this.name = name;
-    }
-
     public Long getId() {
         return id;
     }
@@ -52,42 +44,33 @@ public class Tag extends RepresentationModel<Tag> {
         this.name = name;
     }
 
-    @Override
-    public String toString() {
-        return "Tag = " + this.name;
-    }
-
-
-    public void addGiftCertificate(GiftCertificate giftCertificate) {
-        boolean added = giftCertificates.add(giftCertificate);
-        if (added) {
-            giftCertificate.getTags().add(this);
-        }
-    }
-
-    public void addAllGiftCertificates(Collection<GiftCertificate> newGiftCertificates) {
-        boolean added = giftCertificates.addAll(newGiftCertificates);
-        if (added) {
-            newGiftCertificates.forEach(gc -> gc.getTags().add(this));
-        }
-    }
-
-    public void removeGiftCertificate(GiftCertificate giftCertificate) {
-        boolean removed = getGiftCertificates().remove(giftCertificates);
-        if (removed) {
-            giftCertificate.getTags().remove(this);
-        }
-    }
-
-    public Tag copy() {
-        return new Tag(this.getId(), this.getName());
-    }
-
     public Set<GiftCertificate> getGiftCertificates() {
         return giftCertificates;
     }
 
     public void setGiftCertificates(Set<GiftCertificate> giftCertificates) {
         this.giftCertificates = giftCertificates;
+    }
+
+    public Tag copy() {
+        return new Tag(this.getId(), this.getName());
+    }
+
+    @Override
+    public String toString() {
+        return "Tag = " + this.name;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (!(obj instanceof Tag)) return false;
+        Tag tag = (Tag) obj;
+        return this.getName().equals(tag.getName());
+    }
+
+    @Override
+    public int hashCode() {
+        return this.getName().hashCode();
     }
 }

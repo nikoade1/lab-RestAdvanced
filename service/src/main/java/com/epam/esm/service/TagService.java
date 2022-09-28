@@ -27,7 +27,7 @@ public class TagService {
 
     public Tag find(long id) throws ItemNotFoundException {
         Tag response = this.tagDAO.find(id);
-        if (response == null) throw new ItemNotFoundException("Tag with id " + id + "not found");
+        if (response == null) throw new ItemNotFoundException("Tag with id " + id + " was not found");
         return response;
     }
 

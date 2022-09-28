@@ -2,6 +2,7 @@ package com.epam.esm.controller;
 
 import com.epam.esm.exceptions.ItemNotFoundException;
 import com.epam.esm.model.GiftCertificate;
+import com.epam.esm.model.Tag;
 import com.epam.esm.service.GiftCertificateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -64,13 +65,27 @@ public class GiftCertificateController {
     }
 
     @PatchMapping("/update")
-    public ResponseEntity<?> update(@Valid @RequestBody GiftCertificate giftCertificate) {
+    public ResponseEntity<?> update(@Valid @RequestBody GiftCertificate giftCertificate) throws ItemNotFoundException {
         GiftCertificate updated = this.giftCertificateService.update(giftCertificate);
         GiftCertificate response = updated.copy();
 
         response.add(linkTo(methodOn(GiftCertificateController.class).findAll())
                 .withRel("link to all GiftCertificates"));
 
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PatchMapping("/{id}/addTag")
+    public ResponseEntity<?> addTag(@PathVariable Long id, @RequestBody Tag tag) throws ItemNotFoundException {
+        GiftCertificate response = this.giftCertificateService.addTag(id, tag);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PatchMapping("/{id}/removeTag")
+    public ResponseEntity<?> removeTag(@PathVariable Long id,
+                                       @RequestBody Tag tag) throws ItemNotFoundException {
+
+        GiftCertificate response = this.giftCertificateService.removeTag(id, tag);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
