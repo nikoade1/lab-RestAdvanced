@@ -22,14 +22,18 @@ public class GiftCertificateController {
 
     private final GiftCertificateService giftCertificateService;
 
+    private final int defaultPageValue = 1;
+    private final int defaultSizeValue = 5;
+
     @Autowired
     public GiftCertificateController(GiftCertificateService giftCertificateService) {
         this.giftCertificateService = giftCertificateService;
     }
 
     @GetMapping
-    public ResponseEntity<?> findAll() {
-        List<GiftCertificate> giftCertificates = this.giftCertificateService.findAll();
+    public ResponseEntity<?> findAll(@RequestParam(value = "page", required = false, defaultValue = "" + defaultPageValue) int page,
+                                     @RequestParam(value = "size", required = false, defaultValue = "" + defaultSizeValue) int size) {
+        List<GiftCertificate> giftCertificates = this.giftCertificateService.findAll(page, size);
         List<GiftCertificate> response = new ArrayList<>();
         giftCertificates.forEach(gc -> {
             GiftCertificate copy = gc.copy();
@@ -47,7 +51,7 @@ public class GiftCertificateController {
     @PostMapping("/add")
     public ResponseEntity<?> add(@Valid @RequestBody GiftCertificate giftCertificate) {
         GiftCertificate response = this.giftCertificateService.add(giftCertificate)
-                .add(linkTo(methodOn(GiftCertificateController.class).findAll())
+                .add(linkTo(methodOn(GiftCertificateController.class).findAll(defaultPageValue, defaultSizeValue))
                         .withRel("link to all GiftCertificates"));
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -57,7 +61,7 @@ public class GiftCertificateController {
         GiftCertificate giftCertificate = this.giftCertificateService.find(id);
         GiftCertificate response = giftCertificate.copy();
 
-        response.add(linkTo(methodOn(GiftCertificateController.class).findAll())
+        response.add(linkTo(methodOn(GiftCertificateController.class).findAll(defaultPageValue, defaultSizeValue))
                 .withRel("link to all GiftCertificates"));
 
         return new ResponseEntity<>(response, HttpStatus.OK);
@@ -68,7 +72,7 @@ public class GiftCertificateController {
         GiftCertificate updated = this.giftCertificateService.update(giftCertificate);
         GiftCertificate response = updated.copy();
 
-        response.add(linkTo(methodOn(GiftCertificateController.class).findAll())
+        response.add(linkTo(methodOn(GiftCertificateController.class).findAll(defaultPageValue, defaultSizeValue))
                 .withRel("link to all GiftCertificates"));
 
         return new ResponseEntity<>(response, HttpStatus.OK);

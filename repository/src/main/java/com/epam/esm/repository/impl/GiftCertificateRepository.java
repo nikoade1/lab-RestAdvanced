@@ -28,9 +28,11 @@ public class GiftCertificateRepository implements GiftCertificateDAO {
     }
 
     @Override
-    public List<GiftCertificate> findAll() {
+    public List<GiftCertificate> findAll(int page, int size) {
         this.entityManager.getTransaction().begin();
         Query query = this.entityManager.createQuery("Select gc from GiftCertificate gc");
+        query.setFirstResult((page - 1) * size);
+        query.setMaxResults(size);
         this.entityManager.getTransaction().commit();
         return query.getResultList();
     }

@@ -7,12 +7,5 @@ import java.util.List;
 
 public class Main {
     public static void main(String... args) {
-        TagRepository tagRepository = new TagRepository();
-        GiftCertificateRepository giftCertificateRepository = new GiftCertificateRepository();
-
-        TagService ts = new TagService(tagRepository);
-
-        List<Tag> ls = ts.findAll();
-
     }
 }

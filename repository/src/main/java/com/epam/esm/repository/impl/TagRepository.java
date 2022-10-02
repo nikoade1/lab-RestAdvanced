@@ -25,6 +25,8 @@ public class TagRepository implements TagDAO {
     public List<Tag> findAll(int page, int size) {
         this.entityManager.getTransaction().begin();
         Query query = this.entityManager.createQuery("Select t from Tag t");
+        query.setFirstResult((page - 1) * size);
+        query.setMaxResults(size);
         this.entityManager.getTransaction().commit();
         return query.getResultList();
     }

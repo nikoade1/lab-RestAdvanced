@@ -19,8 +19,8 @@ public class GiftCertificateService {
         this.giftCertificateDAO = giftCertificateDAO;
     }
 
-    public List<GiftCertificate> findAll() {
-        return this.giftCertificateDAO.findAll();
+    public List<GiftCertificate> findAll(int page, int size) {
+        return this.giftCertificateDAO.findAll(page, size);
     }
 
     public GiftCertificate find(Long id) throws ItemNotFoundException {
