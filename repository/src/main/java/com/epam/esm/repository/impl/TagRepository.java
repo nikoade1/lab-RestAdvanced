@@ -22,7 +22,7 @@ public class TagRepository implements TagDAO {
     }
 
     @Override
-    public List<Tag> findAll() {
+    public List<Tag> findAll(int page, int size) {
         this.entityManager.getTransaction().begin();
         Query query = this.entityManager.createQuery("Select t from Tag t");
         this.entityManager.getTransaction().commit();
@@ -32,9 +32,9 @@ public class TagRepository implements TagDAO {
     @Override
     public Tag add(Tag tag) {
         this.entityManager.getTransaction().begin();
-        this.entityManager.persist(tag);
+        Tag merged = this.entityManager.merge(tag);
         this.entityManager.getTransaction().commit();
-        return tag;
+        return merged;
     }
 
     @Override

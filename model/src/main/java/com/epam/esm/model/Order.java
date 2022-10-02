@@ -1,7 +1,8 @@
 package com.epam.esm.model;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -28,14 +29,6 @@ public class Order {
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public Order() {
         this.purchaseDate = LocalDateTime.now();
     }
@@ -44,6 +37,14 @@ public class Order {
         this();
         this.giftCertificate = giftCertificate;
         this.cost = giftCertificate.getPrice();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public LocalDateTime getPurchaseDate() {

@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface TagDAO {
 
-    List<Tag> findAll();
+    List<Tag> findAll(int page, int size);
 
     Tag add(Tag tag);
 

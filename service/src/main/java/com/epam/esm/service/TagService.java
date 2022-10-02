@@ -21,8 +21,8 @@ public class TagService {
         return this.tagDAO.add(tag);
     }
 
-    public List<Tag> findAll() {
-        return this.tagDAO.findAll();
+    public List<Tag> findAll(int page, int size) {
+        return this.tagDAO.findAll(page, size);
     }
 
     public Tag find(long id) throws ItemNotFoundException {

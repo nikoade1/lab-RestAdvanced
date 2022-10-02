@@ -25,6 +25,9 @@ public class TagController {
     private final TagService tagService;
     private final GiftCertificateService giftCertificateService;
 
+    private final int defaultPageValue = 1;
+    private final int defaultSizeValue = 5;
+
     @Autowired
     public TagController(TagService tagService, GiftCertificateService giftCertificateService) {
         this.giftCertificateService = giftCertificateService;
@@ -32,8 +35,9 @@ public class TagController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<Tag>> findAll() {
-        List<Tag> tags = this.tagService.findAll();
+    public ResponseEntity<List<Tag>> findAll(@RequestParam(value = "page", required = false, defaultValue = "" + defaultPageValue) int page,
+                                             @RequestParam(value = "size", required = false, defaultValue = "" + defaultSizeValue) int size) {
+        List<Tag> tags = this.tagService.findAll(page, size);
         List<Tag> response = new ArrayList<>();
         tags.forEach(tag -> {
             Tag copy = tag.copy();
@@ -50,20 +54,15 @@ public class TagController {
     @PostMapping("/add")
     public ResponseEntity<?> add(@Valid @RequestBody Tag tag) {
         Tag response = this.tagService.add(tag)
-                .add(linkTo(methodOn(TagController.class).findAll()).withRel("link to all Tags"));
+                .add(linkTo(methodOn(TagController.class).findAll(defaultPageValue, defaultSizeValue)).withRel("link to all Tags"));
         return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
-    @GetMapping("/{id}/giftCertificates")
-    public ResponseEntity<?> getGiftCertificatesByTagId(@PathVariable Long id) {
-        return new ResponseEntity<>(null, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Tag> find(@PathVariable("id") Long id) throws ItemNotFoundException {
         Tag tag = this.tagService.find(id);
         Tag response = tag.copy();
-        response.add(linkTo(methodOn(TagController.class).findAll()).withRel("link to all Tags"));
+        response.add(linkTo(methodOn(TagController.class).findAll(defaultPageValue, defaultSizeValue)).withRel("link to all Tags"));
         return ResponseEntity.ok(response);
     }
 
