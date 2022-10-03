@@ -33,13 +33,7 @@ public class GiftCertificateController {
     public ResponseEntity<?> findAll(@RequestParam(value = "page", required = false, defaultValue = "" + defaultPageValue) int page,
                                      @RequestParam(value = "size", required = false, defaultValue = "" + defaultSizeValue) int size) {
         List<GiftCertificate> giftCertificates = this.giftCertificateService.findAll(page, size);
-        List<GiftCertificate> response = new ArrayList<>();
-        giftCertificates.forEach(gc -> {
-            GiftCertificate copy = gc.copy();
-            copy.add(linkTo(methodOn(GiftCertificateController.class).find(gc.getId())).withSelfRel());
-            response.add(copy);
-        });
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return getResponse(giftCertificates);
     }
 
 
@@ -85,6 +79,10 @@ public class GiftCertificateController {
                                         @RequestParam(value = "size", required = false, defaultValue = "" + defaultSizeValue) int size) {
 
         List<GiftCertificate> giftCertificates = this.giftCertificateService.findByTags(tagNames, page, size);
+        return getResponse(giftCertificates);
+    }
+
+    public ResponseEntity<?> getResponse(List<GiftCertificate> giftCertificates) {
         List<GiftCertificate> response = new ArrayList<>();
         giftCertificates.forEach(gc -> {
             GiftCertificate copy = gc.copy();
@@ -92,7 +90,6 @@ public class GiftCertificateController {
 
             response.add(copy);
         });
-
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

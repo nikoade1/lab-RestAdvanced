@@ -23,14 +23,12 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class TagController {
 
     private final TagService tagService;
-    private final GiftCertificateService giftCertificateService;
 
     private final int defaultPageValue = 1;
     private final int defaultSizeValue = 5;
 
     @Autowired
-    public TagController(TagService tagService, GiftCertificateService giftCertificateService) {
-        this.giftCertificateService = giftCertificateService;
+    public TagController(TagService tagService) {
         this.tagService = tagService;
     }
 
@@ -41,11 +39,7 @@ public class TagController {
         List<Tag> response = new ArrayList<>();
         tags.forEach(tag -> {
             Tag copy = tag.copy();
-            try {
-                copy.add(linkTo(methodOn(TagController.class).find(tag.getId())).withSelfRel());
-            } catch (ItemNotFoundException e) {
-                throw new RuntimeException(e);
-            }
+            copy.add(linkTo(methodOn(TagController.class).find(tag.getId())).withSelfRel());
             response.add(copy);
         });
         return new ResponseEntity<>(response, HttpStatus.OK);

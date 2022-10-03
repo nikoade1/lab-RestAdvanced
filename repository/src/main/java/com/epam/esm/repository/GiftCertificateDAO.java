@@ -1,6 +1,7 @@
 package com.epam.esm.repository;
 
 import com.epam.esm.model.GiftCertificate;
+import com.epam.esm.model.Tag;
 
 import java.util.List;
 
@@ -16,5 +17,5 @@ public interface GiftCertificateDAO {
 
     GiftCertificate update(GiftCertificate giftCertificate);
 
-    List<GiftCertificate> findByTags(String[] tagNames, int page, int size);
+    List<GiftCertificate> findByTags(List<Tag> tags, int page, int size);
 }

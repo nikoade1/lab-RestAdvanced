@@ -8,6 +8,7 @@ import com.epam.esm.repository.TagDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -53,15 +54,19 @@ public class GiftCertificateService {
     }
 
     public List<GiftCertificate> findByTags(String[] tagNames, int page, int size) {
-        return this.giftCertificateDAO.findByTags(tagNames, page, size);
+        List<Tag> tags = new ArrayList<>();
+        for (String name : tagNames) {
+            this.tagDAO.findByName(name).stream().findAny().ifPresent(tags::add);
+        }
+        return this.giftCertificateDAO.findByTags(tags, page, size);
     }
 
     private void addIdToTags(GiftCertificate giftCertificate) {
         giftCertificate.getTags()
                 .forEach(t -> {
-                    List<Tag> ls = this.tagDAO.findByName(t.getName());
-                    if (ls.isEmpty()) return;
-                    t.setId(ls.get(0).getId());
+                    Tag tag = this.tagDAO.findByName(t.getName()).stream().findAny().orElse(null);
+                    if (tag == null) return;
+                    t.setId(tag.getId());
                 });
 
     }
