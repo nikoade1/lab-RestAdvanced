@@ -40,12 +40,6 @@ public class GiftCertificateRepository implements GiftCertificateDAO {
     @Override
     public GiftCertificate add(GiftCertificate giftCertificate) {
         this.entityManager.getTransaction().begin();
-        giftCertificate.getTags()
-                .forEach(t -> {
-                    List<Tag> ls = this.tagDAO.findByName(t.getName());
-                    if (ls.isEmpty()) return;
-                    t.setId(ls.get(0).getId());
-                });
         GiftCertificate merged = this.entityManager.merge(giftCertificate);
         this.entityManager.getTransaction().commit();
         return merged;
@@ -72,16 +66,15 @@ public class GiftCertificateRepository implements GiftCertificateDAO {
                     if (ls.isEmpty()) return;
                     t.setId(ls.get(0).getId());
                 });
+
         this.entityManager.merge(toUpdate);
         this.entityManager.getTransaction().commit();
         return find(toUpdate.getId());
     }
 
     @Override
-    public void merge(GiftCertificate giftCertificate) {
-        this.entityManager.getTransaction().begin();
-        this.entityManager.merge(giftCertificate);
-        this.entityManager.getTransaction().commit();
+    public List<GiftCertificate> findByTags(String[] tagNames, int page, int size) {
+        return null;
     }
 
     @Override

@@ -1,6 +1,5 @@
 package com.epam.esm.controller;
 
-import com.epam.esm.exceptions.ItemNotFoundException;
 import com.epam.esm.model.GiftCertificate;
 import com.epam.esm.service.GiftCertificateService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,11 +36,7 @@ public class GiftCertificateController {
         List<GiftCertificate> response = new ArrayList<>();
         giftCertificates.forEach(gc -> {
             GiftCertificate copy = gc.copy();
-            try {
-                copy.add(linkTo(methodOn(GiftCertificateController.class).find(gc.getId())).withSelfRel());
-            } catch (ItemNotFoundException e) {
-                throw new RuntimeException(e);
-            }
+            copy.add(linkTo(methodOn(GiftCertificateController.class).find(gc.getId())).withSelfRel());
             response.add(copy);
         });
         return new ResponseEntity<>(response, HttpStatus.OK);
@@ -57,7 +52,7 @@ public class GiftCertificateController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> find(@PathVariable("id") long id) throws ItemNotFoundException {
+    public ResponseEntity<?> find(@PathVariable("id") long id) {
         GiftCertificate giftCertificate = this.giftCertificateService.find(id);
         GiftCertificate response = giftCertificate.copy();
 
@@ -68,7 +63,7 @@ public class GiftCertificateController {
     }
 
     @PatchMapping("/update")
-    public ResponseEntity<?> update(@Valid @RequestBody GiftCertificate giftCertificate) throws ItemNotFoundException {
+    public ResponseEntity<?> update(@Valid @RequestBody GiftCertificate giftCertificate) {
         GiftCertificate updated = this.giftCertificateService.update(giftCertificate);
         GiftCertificate response = updated.copy();
 
@@ -79,8 +74,25 @@ public class GiftCertificateController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ModelAndView delete(@PathVariable("id") Long id) throws ItemNotFoundException {
+    public ModelAndView delete(@PathVariable("id") Long id) {
         this.giftCertificateService.deleteById(id);
         return new ModelAndView("redirect:/giftCertificates");
+    }
+
+    @GetMapping("/tags")
+    public ResponseEntity<?> findByTags(@RequestParam String[] tagNames,
+                                        @RequestParam(value = "page", required = false, defaultValue = "" + defaultPageValue) int page,
+                                        @RequestParam(value = "size", required = false, defaultValue = "" + defaultSizeValue) int size) {
+
+        List<GiftCertificate> giftCertificates = this.giftCertificateService.findByTags(tagNames, page, size);
+        List<GiftCertificate> response = new ArrayList<>();
+        giftCertificates.forEach(gc -> {
+            GiftCertificate copy = gc.copy();
+            copy.add(linkTo(methodOn(GiftCertificateController.class).find(gc.getId())).withSelfRel());
+
+            response.add(copy);
+        });
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

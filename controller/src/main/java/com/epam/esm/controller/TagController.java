@@ -59,7 +59,7 @@ public class TagController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Tag> find(@PathVariable("id") Long id) throws ItemNotFoundException {
+    public ResponseEntity<Tag> find(@PathVariable("id") Long id) {
         Tag tag = this.tagService.find(id);
         Tag response = tag.copy();
         response.add(linkTo(methodOn(TagController.class).findAll(defaultPageValue, defaultSizeValue)).withRel("link to all Tags"));
@@ -67,7 +67,7 @@ public class TagController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ModelAndView delete(@PathVariable("id") Long id) throws ItemNotFoundException {
+    public ModelAndView delete(@PathVariable("id") Long id) {
         this.tagService.deleteById(id);
         return new ModelAndView("redirect:/tags");
     }

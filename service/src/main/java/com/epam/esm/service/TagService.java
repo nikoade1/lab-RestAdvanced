@@ -25,7 +25,7 @@ public class TagService {
         return this.tagDAO.findAll(page, size);
     }
 
-    public Tag find(long id) throws ItemNotFoundException {
+    public Tag find(long id) {
         Tag response = this.tagDAO.find(id);
         if (response == null) throw new ItemNotFoundException("Tag with id " + id + " was not found");
         return response;
@@ -35,7 +35,7 @@ public class TagService {
         this.tagDAO.delete(tag);
     }
 
-    public void deleteById(long id) throws ItemNotFoundException {
+    public void deleteById(long id) {
         Tag tag = find(id);
         delete(tag);
     }

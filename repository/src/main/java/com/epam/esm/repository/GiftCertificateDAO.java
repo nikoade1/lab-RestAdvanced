@@ -16,5 +16,5 @@ public interface GiftCertificateDAO {
 
     GiftCertificate update(GiftCertificate giftCertificate);
 
-    void merge(GiftCertificate giftCertificate);
+    List<GiftCertificate> findByTags(String[] tagNames, int page, int size);
 }
