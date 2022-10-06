@@ -21,9 +21,12 @@ public class UserRepository implements UserDAO {
         this.entityManager = this.emf.createEntityManager();
     }
 
-    public List<User> findAll() {
+    @Override
+    public List<User> findAll(int page, int size) {
         this.entityManager.getTransaction().begin();
         Query query = this.entityManager.createQuery("Select u from User u");
+        query.setFirstResult((page - 1) * size);
+        query.setMaxResults(size);
         this.entityManager.getTransaction().commit();
         return query.getResultList();
     }
@@ -31,9 +34,9 @@ public class UserRepository implements UserDAO {
     @Override
     public User add(User user) {
         this.entityManager.getTransaction().begin();
-        this.entityManager.persist(user);
+        User merged = this.entityManager.merge(user);
         this.entityManager.getTransaction().commit();
-        return user;
+        return merged;
     }
 
     @Override
@@ -52,18 +55,19 @@ public class UserRepository implements UserDAO {
     public User update(User user) {
         User toUpdate = find(user.getId());
         this.entityManager.getTransaction().begin();
-
+        this.entityManager.detach(toUpdate);
         toUpdate.setFirstName(user.getFirstName());
         toUpdate.setLastName(user.getLastName());
         toUpdate.setMoney(user.getMoney());
-
+        toUpdate.setOrders(user.getOrders());
+        this.entityManager.merge(toUpdate);
         this.entityManager.getTransaction().commit();
-        return toUpdate;
+        return find(toUpdate.getId());
     }
 
+    @Override
     public void close() {
         this.entityManager.close();
         this.emf.close();
     }
-
 }

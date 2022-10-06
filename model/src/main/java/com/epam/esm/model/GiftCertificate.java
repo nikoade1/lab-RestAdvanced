@@ -47,6 +47,10 @@ public class GiftCertificate extends RepresentationModel<GiftCertificate> {
             uniqueConstraints = @UniqueConstraint(columnNames = {"giftCertificate_id", "tag_id"}))
     private Set<Tag> tags;
 
+    @OneToMany
+    @JoinColumn(name = "giftCertificate_id")
+    private Set<Order> orders;
+
     public GiftCertificate() {
         this.tags = new HashSet<>();
     }
@@ -141,7 +145,7 @@ public class GiftCertificate extends RepresentationModel<GiftCertificate> {
     }
 
     public void removeTag(Long tagId) {
-        Tag tag = this.tags.stream().filter(t -> t.getId() == tagId).findFirst().orElse(null);
+        Tag tag = this.tags.stream().filter(t -> Objects.equals(t.getId(), tagId)).findFirst().orElse(null);
         if (tag != null) {
             this.tags.remove(tag);
             tag.getGiftCertificates().remove(this);

@@ -1,8 +1,6 @@
 package com.epam.esm.controller;
 
-import com.epam.esm.exceptions.ItemNotFoundException;
 import com.epam.esm.model.Tag;
-import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

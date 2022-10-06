@@ -18,4 +18,6 @@ public interface GiftCertificateDAO {
     GiftCertificate update(GiftCertificate giftCertificate);
 
     List<GiftCertificate> findByTags(List<Tag> tags, int page, int size);
+
+    void close();
 }

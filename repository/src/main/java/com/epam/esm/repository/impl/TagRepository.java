@@ -65,6 +65,7 @@ public class TagRepository implements TagDAO {
         this.entityManager.getTransaction().commit();
     }
 
+    @Override
     public void close() {
         this.entityManager.close();
         this.emf.close();

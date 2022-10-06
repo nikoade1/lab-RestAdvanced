@@ -3,8 +3,6 @@ package com.epam.esm.repository.impl;
 import com.epam.esm.model.GiftCertificate;
 import com.epam.esm.model.Tag;
 import com.epam.esm.repository.GiftCertificateDAO;
-import com.epam.esm.repository.TagDAO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -20,11 +18,8 @@ public class GiftCertificateRepository implements GiftCertificateDAO {
 
     private final EntityManager entityManager;
     private final EntityManagerFactory emf;
-    private final TagDAO tagDAO;
 
-    @Autowired
-    public GiftCertificateRepository(TagDAO tagDAO) {
-        this.tagDAO = tagDAO;
+    public GiftCertificateRepository() {
         this.emf = Persistence.createEntityManagerFactory("pu");
         this.entityManager = this.emf.createEntityManager();
     }
@@ -97,6 +92,7 @@ public class GiftCertificateRepository implements GiftCertificateDAO {
         this.entityManager.getTransaction().commit();
     }
 
+    @Override
     public void close() {
         this.entityManager.close();
         this.emf.close();

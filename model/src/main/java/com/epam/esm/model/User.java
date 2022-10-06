@@ -1,5 +1,6 @@
 package com.epam.esm.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;
@@ -31,6 +32,7 @@ public class User extends RepresentationModel<User> {
     @Column(nullable = false)
     private double money;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user")
     private Set<Order> orders;
 
@@ -45,15 +47,16 @@ public class User extends RepresentationModel<User> {
     }
 
     public User(Long id, String firstName, String lastName, double money) {
-        this();
+        this(firstName, lastName, money);
         this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.money = money;
     }
 
     public Long getId() {
         return this.id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getFirstName() {
@@ -80,8 +83,12 @@ public class User extends RepresentationModel<User> {
         this.money = money;
     }
 
-    public User copy() {
-        return new User(this.id, this.firstName, this.lastName, this.money);
+    public Set<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(Set<Order> orders) {
+        this.orders = orders;
     }
 
     @Override
@@ -101,6 +108,10 @@ public class User extends RepresentationModel<User> {
         return Objects.hash(super.hashCode(), getId(), getFirstName(), getLastName(), getMoney());
     }
 
+    public User copy() {
+        return new User(this.id, this.firstName, this.lastName, this.money);
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -110,5 +121,4 @@ public class User extends RepresentationModel<User> {
                 ", money=" + this.money +
                 '}';
     }
-
 }

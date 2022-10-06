@@ -22,7 +22,7 @@ public class Order {
     private double cost;
 
     @ManyToOne
-    @JoinColumn(name = "certificate_id")
+    @JoinColumn(name = "giftCertificate_id")
     private GiftCertificate giftCertificate;
 
     @ManyToOne
@@ -30,13 +30,17 @@ public class Order {
     private User user;
 
     public Order() {
-        this.purchaseDate = LocalDateTime.now();
     }
 
-    public Order(GiftCertificate giftCertificate) {
-        this();
+    public Order(User user, GiftCertificate giftCertificate) {
+        this.user = user;
         this.giftCertificate = giftCertificate;
         this.cost = giftCertificate.getPrice();
+    }
+
+    @PrePersist
+    public void prePersist() {
+        this.purchaseDate = LocalDateTime.now();
     }
 
     public Long getId() {
@@ -84,14 +88,18 @@ public class Order {
         if (this == o) return true;
         if (!(o instanceof Order)) return false;
         Order order = (Order) o;
-        return Double.compare(order.getCost(), getCost()) == 0
-                && Objects.equals(getId(), order.getId())
-                && Objects.equals(getPurchaseDate(), order.getPurchaseDate());
+        return Objects.equals(this.getId(), order.getId())
+                && Objects.equals(this.getGiftCertificate(), order.getGiftCertificate())
+                && Objects.equals(this.getCost(), order.getCost())
+                && Objects.equals(this.getPurchaseDate(), order.getPurchaseDate());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getPurchaseDate(), getCost());
+        return Objects.hash(this.getId(),
+                this.getGiftCertificate(),
+                this.getCost(),
+                this.getPurchaseDate());
     }
 
     @Override

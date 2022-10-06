@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface UserDAO {
 
-    List<User> findAll();
+    List<User> findAll(int page, int size);
 
     User add(User user);
 
@@ -14,6 +14,7 @@ public interface UserDAO {
 
     void delete(User user);
 
-    User update(User User);
+    User update(User user);
 
+    void close();
 }
