@@ -55,7 +55,15 @@ public class GiftCertificate extends RepresentationModel<GiftCertificate> {
         this.tags = new HashSet<>();
     }
 
-    public GiftCertificate(Long id, String name, String description, double price, int duration, Set<Tag> tags) {
+    public GiftCertificate(String name, String description, double price, int duration, Set<Tag> tags) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.duration = duration;
+        this.tags = tags;
+    }
+
+    private GiftCertificate(Long id, String name, String description, double price, int duration, Set<Tag> tags) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -64,12 +72,13 @@ public class GiftCertificate extends RepresentationModel<GiftCertificate> {
         this.tags = tags;
     }
 
-    public GiftCertificate(Long id, String name, String description, double price, int duration,
+    private GiftCertificate(Long id, String name, String description, double price, int duration,
                            LocalDateTime create_date, LocalDateTime last_update_date, Set<Tag> tags) {
         this(id, name, description, price, duration, tags);
         this.create_date = create_date;
         this.last_update_date = last_update_date;
     }
+
 
     @PrePersist
     public void prePersist() {
