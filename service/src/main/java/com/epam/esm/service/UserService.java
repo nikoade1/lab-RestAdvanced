@@ -4,7 +4,6 @@ import com.epam.esm.exceptions.ItemNotFoundException;
 import com.epam.esm.exceptions.MoneyNotEnoughException;
 import com.epam.esm.model.GiftCertificate;
 import com.epam.esm.model.Order;
-import com.epam.esm.model.Tag;
 import com.epam.esm.model.User;
 import com.epam.esm.repository.OrderDAO;
 import com.epam.esm.repository.UserDAO;
@@ -48,7 +47,7 @@ public class UserService {
     public Order orderGiftCertificate(Long userId, Long giftCertificateId) {
         User user = find(userId);
         GiftCertificate giftCertificate = this.giftCertificateService.find(giftCertificateId);
-        if(user.getMoney() <= giftCertificate.getPrice()) {
+        if (user.getMoney() <= giftCertificate.getPrice()) {
             throw new MoneyNotEnoughException("user with id + " + userId + " has not enough money");
         }
         user.setMoney(user.getMoney() - giftCertificate.getPrice());
@@ -63,7 +62,8 @@ public class UserService {
                 .filter(o -> Objects.equals(o.getId(), orderId))
                 .findAny().orElse(null);
 
-        if (order == null) throw new ItemNotFoundException("User with id " + userId + " has no order with id " + orderId);
+        if (order == null)
+            throw new ItemNotFoundException("User with id " + userId + " has no order with id " + orderId);
         return order;
     }
 }

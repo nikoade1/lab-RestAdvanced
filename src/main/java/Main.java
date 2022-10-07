@@ -13,7 +13,8 @@ import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.service.TagService;
 import com.epam.esm.service.UserService;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashSet;
@@ -23,12 +24,11 @@ import java.util.Set;
 
 public class Main {
     private static final String filePath = "/src/main/resources/words";
-    private static List<String> lines;
-    private static Random random;
-
     private static final int userNumber = 1000;
     private static final int tagNumber = 1000;
     private static final int giftCertificateNumber = 10000;
+    private static List<String> lines;
+    private static Random random;
 
     public static void main(String... args) throws IOException {
 
@@ -66,7 +66,7 @@ public class Main {
 
     private static void createGiftCertificates(GiftCertificateService giftCertificateService,
                                                TagService tagService) {
-        for (int i = 0; i < giftCertificateNumber; i ++) {
+        for (int i = 0; i < giftCertificateNumber; i++) {
             String name = getRandomWord();
             String description = getRandomWord();
             double price = random.nextDouble() * random.nextInt(500) + 1;
@@ -82,7 +82,7 @@ public class Main {
         int numTags = random.nextInt(10);
         List<Tag> allTags = tagService.findAll(1, tagNumber);
         Set<Tag> randomTags = new HashSet<>();
-        for(int i = 0; i < numTags; i ++) {
+        for (int i = 0; i < numTags; i++) {
             int index = random.nextInt(allTags.size());
             randomTags.add(allTags.get(index));
         }
@@ -90,7 +90,7 @@ public class Main {
     }
 
     private static void createUsers(UserService userService) {
-        for (int i = 0; i < userNumber; i ++) {
+        for (int i = 0; i < userNumber; i++) {
             String userName = getRandomWord();
             String userLastname = getRandomWord();
             int userMoney = random.nextInt(100000);
@@ -101,7 +101,7 @@ public class Main {
     }
 
     private static void createTags(TagService tagService) {
-        for (int i = 0; i < tagNumber; i ++ ) {
+        for (int i = 0; i < tagNumber; i++) {
             String name = getRandomWord();
             Tag tag = new Tag(name);
             tagService.add(tag);

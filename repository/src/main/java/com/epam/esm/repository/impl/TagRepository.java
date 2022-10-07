@@ -84,7 +84,7 @@ public class TagRepository implements TagDAO {
 //                " ORDER BY COUNT(t.name) desc \n" +
 //                " LIMIT 1";
 
-        String queryString ="SELECT t.id, t.name\n" +
+        String queryString = "SELECT t.id, t.name\n" +
                 "        from orders \n" +
                 "        inner join users u on u.id = orders.user_id\n" +
                 "        inner join giftcertificate_tag gct on orders.giftCertificate_id = gct.giftcertificate_id\n" +

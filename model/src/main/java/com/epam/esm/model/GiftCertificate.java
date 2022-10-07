@@ -73,7 +73,7 @@ public class GiftCertificate extends RepresentationModel<GiftCertificate> {
     }
 
     private GiftCertificate(Long id, String name, String description, double price, int duration,
-                           LocalDateTime create_date, LocalDateTime last_update_date, Set<Tag> tags) {
+                            LocalDateTime create_date, LocalDateTime last_update_date, Set<Tag> tags) {
         this(id, name, description, price, duration, tags);
         this.create_date = create_date;
         this.last_update_date = last_update_date;
