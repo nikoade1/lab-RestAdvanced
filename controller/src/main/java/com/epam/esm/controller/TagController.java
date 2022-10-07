@@ -63,4 +63,10 @@ public class TagController {
         this.tagService.deleteById(id);
         return new ModelAndView("redirect:/tags");
     }
+
+    @GetMapping("/mostWidelyUsedTag")
+    public ResponseEntity<Tag> getMostWidelyUsedTag() {
+        Tag response = this.tagService.getMostWidelyUsedTag();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }

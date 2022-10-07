@@ -40,6 +40,10 @@ public class TagService {
         delete(tag);
     }
 
+    public Tag getMostWidelyUsedTag() {
+        return this.tagDAO.getMostWidelyUsedTag();
+    }
+
     public List<Tag> findByName(String name) {
         return this.tagDAO.findByName(name);
     }

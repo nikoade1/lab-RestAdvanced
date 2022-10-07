@@ -4,6 +4,7 @@ import com.epam.esm.exceptions.ItemNotFoundException;
 import com.epam.esm.exceptions.MoneyNotEnoughException;
 import com.epam.esm.model.GiftCertificate;
 import com.epam.esm.model.Order;
+import com.epam.esm.model.Tag;
 import com.epam.esm.model.User;
 import com.epam.esm.repository.OrderDAO;
 import com.epam.esm.repository.UserDAO;

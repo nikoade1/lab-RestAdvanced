@@ -1,5 +1,6 @@
 package com.epam.esm.repository.impl;
 
+import com.epam.esm.model.Tag;
 import com.epam.esm.model.User;
 import com.epam.esm.repository.UserDAO;
 import org.springframework.stereotype.Repository;

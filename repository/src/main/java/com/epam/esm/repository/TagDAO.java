@@ -17,4 +17,6 @@ public interface TagDAO {
     List<Tag> findByName(String name);
 
     void close();
+
+    Tag getMostWidelyUsedTag();
 }

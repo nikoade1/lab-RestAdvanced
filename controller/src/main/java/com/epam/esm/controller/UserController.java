@@ -1,6 +1,7 @@
 package com.epam.esm.controller;
 
 import com.epam.esm.model.Order;
+import com.epam.esm.model.Tag;
 import com.epam.esm.model.User;
 import com.epam.esm.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +56,6 @@ public class UserController {
                                         @RequestParam(value = "page", required = false, defaultValue = "" + defaultPageValue) int page,
                                         @RequestParam(value = "size", required = false, defaultValue = "" + defaultSizeValue) int size) {
 
-        User user = this.userService.find(id);
         List<Order> response = this.userService.getOrders(id, page, size);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
@@ -63,9 +63,9 @@ public class UserController {
 
     @GetMapping("/{userId}/orders/{orderId}")
     public ResponseEntity<?> findOrder(@PathVariable Long userId,
-                                        @PathVariable Long orderId,
-                                        @RequestParam(value = "page", required = false, defaultValue = "" + defaultPageValue) int page,
-                                        @RequestParam(value = "size", required = false, defaultValue = "" + defaultSizeValue) int size) {
+                                       @PathVariable Long orderId,
+                                       @RequestParam(value = "page", required = false, defaultValue = "" + defaultPageValue) int page,
+                                       @RequestParam(value = "size", required = false, defaultValue = "" + defaultSizeValue) int size) {
 
         Order response = this.userService.getOrder(userId, orderId, page, size);
         return new ResponseEntity<>(response, HttpStatus.OK);

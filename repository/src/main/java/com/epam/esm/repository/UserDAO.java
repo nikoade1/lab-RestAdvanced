@@ -1,5 +1,6 @@
 package com.epam.esm.repository;
 
+import com.epam.esm.model.Tag;
 import com.epam.esm.model.User;
 
 import java.util.List;

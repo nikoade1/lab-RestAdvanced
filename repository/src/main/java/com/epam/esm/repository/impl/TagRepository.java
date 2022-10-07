@@ -70,4 +70,37 @@ public class TagRepository implements TagDAO {
         this.entityManager.close();
         this.emf.close();
     }
+
+    @Override
+    public Tag getMostWidelyUsedTag() {
+//        String querry = "SELECT t.id, t.name \n" +
+//                " FROM tags t \n" +
+//                " INNER JOIN giftcertificate_tag gct on t.id = gct.tag_id \n" +
+//                " INNER JOIN orders o on o.giftcertificate_id = gct.giftcertificate_id \n" +
+//                " WHERE o.user_id = " + id + " \n" +
+//                " ORDER BY SUM(o.cost) DESC \n " +
+//                " LIMIT 1 \n" +
+//                " GROUP BY t.id, t.name \n" +
+//                " ORDER BY COUNT(t.name) desc \n" +
+//                " LIMIT 1";
+
+        String queryString ="SELECT t.id, t.name\n" +
+                "        from orders \n" +
+                "        inner join users u on u.id = orders.user_id\n" +
+                "        inner join giftcertificate_tag gct on orders.giftCertificate_id = gct.giftcertificate_id\n" +
+                "        inner join tags t on t.id = gct.tag_id\n" +
+                "        WHERE orders.user_id = (\n" +
+                "        SELECT orders.user_id " +
+                "        FROM orders \n" +
+                "        GROUP BY orders.user_id\n" +
+                "ORDER BY SUM(orders.cost) DESC \n" +
+                "LIMIT 1\n" +
+                ") \n" +
+                "group by t.id, t.name \n" +
+                "order by COUNT(t.name) desc \n" +
+                "limit 1";
+
+        Query query = entityManager.createNativeQuery(queryString, Tag.class);
+        return (Tag) query.getSingleResult();
+    }
 }
